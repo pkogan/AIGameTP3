@@ -6,6 +6,7 @@
 	<script type="text/javascript" src="js/phaser.min.js"></script>
         <script type="text/javascript" src="js/Behavior.js"></script>
         <script type="text/javascript" src="js/Behavior_Cursor.js"></script>
+                <script type="text/javascript" src="js/Behavior_Derecho.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -68,8 +69,10 @@ function create() {
 //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
 
+
     // The player and its settings
     player = new Behavior_Cursor(game, 0 ,0, 'dude', 3 ,null,cursors);
+    player2 = new Behavior_Derecho(game, 0 ,0, 'dude', 3 ,player);
             ////game.add.sprite(32, game.world.height - 150, 'dude');
 
     //  We need to enable physics on the player
@@ -107,14 +110,15 @@ function create() {
 function update() {
 
     //  Collide the player and the stars with the platforms
-    game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collide(player.sprite, platforms);
     game.physics.arcade.collide(stars, platforms);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    game.physics.arcade.overlap(player, stars, collectStar, null, this);
+    game.physics.arcade.overlap(player.sprite, stars, collectStar, null, this);
 
     //  Reset the players velocity (movement)
     player.update();
+    player2.update();   
     
     
 }
