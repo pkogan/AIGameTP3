@@ -14,7 +14,7 @@ function Behavior_Cursor(game, posx, posy, key, frame,target,cursors){
     Behavior.call(this,game, posx, posy, key, frame,target);
     
     this.sprite.body.bounce.y = 0.2;
-    this.sprite.body.gravity.y = 300;
+  //  this.sprite.body.gravity.y = 300;
     this.sprite.body.collideWorldBounds = true;
 
     //  Our two animations, walking left and right.
@@ -53,7 +53,21 @@ Behavior_Cursor.prototype.update=function(){
 
         this.frame = 4;
     }
-    
+    if (this.cursors.up.isDown)
+    {
+        //  Move to the left
+        this.sprite.body.velocity.y = -150;
+
+        this.sprite.animations.play('left');
+    }
+    else if (this.cursors.down.isDown)
+    {
+        //  Move to the right
+        this.sprite.body.velocity.y = 150;
+
+        this.sprite.animations.play('right');
+    }
+
     //  Allow the this to jump if they are touching the ground.
     if (this.cursors.up.isDown && this.sprite.body.touching.down)
     {
