@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="js/phaser.min.js"></script>
+        <script type="text/javascript" src="js/Behavior.js"></script>
+        <script type="text/javascript" src="js/Behavior_Mouse.js"></script>
+                <script type="text/javascript" src="js/Behavior_Pursuit.js"></script>
+        <style type="text/css">
+            body {
+                margin: 0; 
+                background: #333;
+            }
+            
+        </style>
+        
+    </head>
+    <body>
+        <script>
+            var game = new Phaser.Game(1100, 600, Phaser.AUTO, 'pursuit', { preload: preload, create: create, update: update });
+            
+            function preload()
+            {
+                game.load.image('mar', 'assets/mar.jpg');
+                game.load.image('pezBueno','assets/pezBueno.png');
+                game.load.image('pezMalo','assets/pezMalo.png');
+                
+                
+                
+            }
+            var pezBueno;
+            var pezMalo;
+            var punto;
+            function create()
+            {
+                game.physics.startSystem(Phaser.Physics.ARCADE);
+                
+                game.add.sprite(0, 0, 'mar');
+                
+                pezBueno = new Behavior_Mouse(game, 32, game.world.height - 200, 'pezBueno', 3 ,null);
+                pezMalo = new Behavior_Pursuit(game, 32, game.world.height - 100, 'pezMalo', 3 ,pezBueno);
+               // pezBueno = game.add.sprite(32, game.world.height - 200, 'pezBueno');
+                //game.physics.arcade.enable(pezBueno);
+    
+    //            pezBueno.body.collideWorldBounds = true;
+      //          pezMalo = game.add.sprite(32, game.world.height - 100, 'pezMalo');
+        //        game.physics.arcade.enable(pezMalo);
+            }
+            
+            function update()
+            {
+                pezBueno.update();
+                pezMalo.update();   
+                /*
+                game.physics.arcade.moveToPointer(pezBueno, 300);
+                //pezBueno.angle += 2;
+                
+                var posx = pezBueno.body.x;
+                var posy = pezBueno.body.y;
+                //console.log(posx, posy);
+                
+                
+                if (Phaser.Rectangle.contains(pezBueno.body, game.input.x, game.input.y))
+                {
+                    pezBueno.body.velocity.setTo(0, 0);
+                }*/
+                
+                
+            }
+        </script>
+        
+        <div id="pursuit" style="width: 90%;margin: 5%; justify-content:center"></div>
+
+    </body>
+</html>
