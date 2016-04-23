@@ -19,7 +19,7 @@ function Behavior_Arrive(game, posx, posy, key, frame, target) {
 
 this.sentido=1;
   //  this.esp_speed = 0;
-    this.max_speed = 200;
+    this.max_speed = 250;
     this.max_force=4;
     this.min_speed = 0;
     this.min_distance = 0;            //
