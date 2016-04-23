@@ -17,7 +17,7 @@ function Behavior_Seek(game, posx, posy, key, frame, target) {
     this.sprite.body.collideWorldBounds = true;
     this.vecReference = new Phaser.Point(0, 0);
 
-this.sentido=1;
+    this.sentido=1;
   //  this.esp_speed = 0;
     this.max_speed = 100;
     this.max_force=10;
