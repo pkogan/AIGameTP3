@@ -13,7 +13,7 @@
 function Behavior_Cursor(game, posx, posy, key, frame,target,cursors){
     Behavior.call(this,game, posx, posy, key, frame,target);
     
-    this.sprite.body.bounce.y = 0.2;
+    //this.sprite.body.bounce.y = 0.2;
   //  this.sprite.body.gravity.y = 300;
     this.sprite.body.collideWorldBounds = true;
 
@@ -31,18 +31,19 @@ Behavior_Cursor.prototype.constructor=Behavior_Cursor;
 Behavior_Cursor.prototype.update=function(){
 
      this.sprite.body.velocity.x = 0;
+     this.sprite.body.velocity.y = 0;
 
     if (this.cursors.left.isDown)
     {
         //  Move to the left
-        this.sprite.body.velocity.x = -150;
+        this.sprite.body.velocity.x = -200;
 
         this.sprite.animations.play('left');
     }
     else if (this.cursors.right.isDown)
     {
         //  Move to the right
-        this.sprite.body.velocity.x = 150;
+        this.sprite.body.velocity.x = 200;
 
         this.sprite.animations.play('right');
     }
@@ -56,14 +57,14 @@ Behavior_Cursor.prototype.update=function(){
     if (this.cursors.up.isDown)
     {
         //  Move to the left
-        this.sprite.body.velocity.y = -150;
+        this.sprite.body.velocity.y = -200;
 
         this.sprite.animations.play('left');
     }
     else if (this.cursors.down.isDown)
     {
         //  Move to the right
-        this.sprite.body.velocity.y = 150;
+        this.sprite.body.velocity.y = 200;
 
         this.sprite.animations.play('right');
     }
