@@ -30,18 +30,15 @@ Behavior_Pursuit.prototype.update = function () {
     if(t===5){
         
        // Calcula el vector de velocidad futura 
-         var posTarget = (this.target.sprite.body.position).valueOf();
-         var velTarget = (this.target.sprite.body.velocity).valueOf();
-         
-         
-         
-         // Cambia la velocidad del objetivo a la predicción... La multiplicación no anda!!
-         Phaser.Point.add(posTarget, (velTarget).multiply(t));
+       this.target.sprite.body.velocity.x=this.target.sprite.body.velocity.x*t;
+       this.target.sprite.body.velocity.y=this.target.sprite.body.velocity.y*t
+       // Cambia la velocidad del objetivo a la predicción... La multiplicación no anda!!
+       Phaser.Point.add(this.target.sprite.body.position, (this.target.sprite.body.velocity));
        
-         if (game.physics.arcade.distanceToPointer(this.sprite, game.input.activePointer) > 5)
+       if (game.physics.arcade.distanceToPointer(this.sprite, game.input.activePointer) > 15)
             this.seek();
-         else
-             this.sprite.body.velocity.set(0);
+       else
+            this.sprite.body.velocity.set(0);
                 
         
        t=0; 
