@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="js/phaser.min.js"></script>
+        <script type="text/javascript" src="js/Behavior.js"></script>
+        <script type="text/javascript" src="js/Behavior_Mouse.js"></script>
+        <!--<script type="text/javascript" src="js/Behavior_Seek.js"></script>-->
+                <script type="text/javascript" src="js/Behavior_Pursuit.js"></script>
+        <style type="text/css">
+            body {
+                margin: 0; 
+                background: #333;
+            }
+            
+        </style>
+        
+    </head>
+    <body>
+        <script>
+            var game = new Phaser.Game(1100, 600, Phaser.AUTO, 'pursuit', { preload: preload, create: create, update: update });
+            
+            function preload()
+            {
+                // para rotacion
+                game.input.maxPointers = 1;
+                
+                game.load.image('mar', 'assets/mar.jpg');
+//                game.load.image('objetivo','assets/pezBueno.png');
+//                game.load.image('pursuit','assets/pezMalo.png');
+                game.load.image('objetivo','assets/circuloT.png');
+                game.load.image('pursuit','assets/CirculoP.png');
+                game.load.image('punto','assets/punto.png');
+                game.load.image('star','assets/star.png');
+                
+            }
+            var objetivo;
+            var pursuit;
+            var targetI;
+            function create()
+            {
+                game.physics.startSystem(Phaser.Physics.ARCADE);
+                
+                //game.add.sprite(0, 0, 'mar');
+                
+                
+                objetivo = new Behavior_Mouse(game, 32, game.world.height - 200, 'objetivo', 3 ,null);
+        
+                targetI = new Behavior_Mouse(game, 32, game.world.height - 200, 'punto', 3 ,objetivo); // Target invisible, sirve para seguir la posición futura
+                
+                pursuit = new Behavior_Pursuit(game, 32, game.world.height - 100, 'pursuit', 3 ,targetI, objetivo);
+            }
+            
+            function update()
+            {
+                
+                objetivo.update();
+                targetI.update();
+                pursuit.update();   
+                
+            }
+        </script>
+        
+        <div id="pursuit" style="width: 90%;margin: 5%; justify-content:center"></div>
+
+    </body>
+</html>
