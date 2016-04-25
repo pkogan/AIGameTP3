@@ -6,7 +6,8 @@
 	<script type="text/javascript" src="js/phaser.min.js"></script>
         <script type="text/javascript" src="js/Behavior.js"></script>
         <script type="text/javascript" src="js/Behavior_Cursor2.js"></script>
-                <script type="text/javascript" src="js/Behavior_Derecho.js"></script>
+    <script type="text/javascript" src="js/Behavior_Seek.js"></script>
+                <script type="text/javascript" src="js/Behavior_Flee.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -22,13 +23,9 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 function preload() {
 
     game.load.image('sky', 'assets/sky.png');
-    game.load.image('ground', 'assets/platform.png');
-    game.load.image('star', 'assets/star.png');
+  //  game.load.image('ground', 'assets/platform.png');
+  //  game.load.image('star', 'assets/star.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-    
-//    game.load.spritesheet('ladron', 'assets/ladron.png', 40, 40);
-//                    game.load.spritesheet('policia', 'assets/policia.png', 40, 40);
-//                    game.load.image('fondoPolicia', 'assets/fondoPolicia.jpg');
 
 }
 
@@ -49,7 +46,7 @@ function create() {
     game.add.sprite(0, 0, 'sky');
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
-    platforms = game.add.group();
+   /* platforms = game.add.group();
 
     //  We will enable physics for any object that is created in this group
     platforms.enableBody = true;
@@ -61,7 +58,7 @@ function create() {
     ground.scale.setTo(2, 2);
 
     //  This stops it from falling away when you jump on it
-    ground.body.immovable = true;
+    ground.body.immovable = true;*
 
     //  Now let's create two ledges
     var ledge = platforms.create(400, 400, 'ground');
@@ -69,14 +66,14 @@ function create() {
 
     ledge = platforms.create(-150, 250, 'ground');
     ledge.body.immovable = true;
-
+*/
 //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
 
 
     // The player and its settings
     player = new Behavior_Cursor2(game, 0 ,0, 'dude', 3 ,null,cursors);
-    player2 = new Behavior_Derecho(game, 0 ,0, 'dude', 3 ,player);
+    player2 = new Behavior_Flee(game, 100 ,100, 'dude', 3 ,player);
             ////game.add.sprite(32, game.world.height - 150, 'dude');
 
     //  We need to enable physics on the player
@@ -86,13 +83,13 @@ function create() {
     //  Player physics properties. Give the little guy a slight bounce.
     
     //  Finally some stars to collect
-    stars = game.add.group();
+   // stars = game.add.group();
 
     //  We will enable physics for any star that is created in this group
-    stars.enableBody = true;
+    //stars.enableBody = true;
 
     //  Here we'll create 12 of them evenly spaced apart
-    for (var i = 0; i < 12; i++)
+  /*  for (var i = 0; i < 12; i++)
     {
         //  Create a star inside of the 'stars' group
         var star = stars.create(i * 70, 0, 'star');
@@ -102,7 +99,7 @@ function create() {
 
         //  This just gives each star a slightly random bounce value
         star.body.bounce.y = 0.7 + Math.random() * 0.2;
-    }
+    }*/
 
     //  The score
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
@@ -114,11 +111,11 @@ function create() {
 function update() {
 
     //  Collide the player and the stars with the platforms
-    game.physics.arcade.collide(player.sprite, platforms);
-    game.physics.arcade.collide(stars, platforms);
+  //  game.physics.arcade.collide(player.sprite, platforms);
+   // game.physics.arcade.collide(stars, platforms);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    game.physics.arcade.overlap(player.sprite, stars, collectStar, null, this);
+    // game.physics.arcade.overlap(player.sprite, stars, collectStar, null, this);
 
     //  Reset the players velocity (movement)
     player.update();
@@ -127,16 +124,16 @@ function update() {
     
 }
 
-function collectStar (player, star) {
-    
-    // Removes the star from the screen
-    star.kill();
-
-    //  Add and update the score
-    score += 10;
-    scoreText.text = 'Score: ' + score;
-
-}
+//function collectStar (player, star) {
+//    
+//    // Removes the star from the screen
+//    star.kill();
+//
+//    //  Add and update the score
+//    score += 10;
+//    scoreText.text = 'Score: ' + score;
+//
+//}
 
 </script>
 

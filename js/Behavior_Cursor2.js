@@ -10,12 +10,13 @@
  * @param {type} cursors
  * @returns {Behavior_Cursor}
  */
-function Behavior_Cursor(game, posx, posy, key, frame,target,cursors){
+function Behavior_Cursor2(game, posx, posy, key, frame,target,cursors){
     Behavior.call(this,game, posx, posy, key, frame,target);
     
-//    this.sprite.body.bounce.y = 0.2;
-//    this.sprite.body.gravity.y = 300;
-    this.sprite.body.collideWorldBounds = true;
+    this.sprite.body.bounce.y = 0.2;
+  //  this.sprite.body.gravity.y = 300;
+//    this.sprite.body.collideWorldBounds = true;
+//    this.sprite.outOfBoundsKill = true;
 
     //  Our two animations, walking left and right.
     this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
@@ -25,10 +26,10 @@ function Behavior_Cursor(game, posx, posy, key, frame,target,cursors){
     this.cursors=cursors;
     return this;
 }
-Behavior_Cursor.prototype= Object.create(Behavior.prototype);//Degfino que es sub clase de Sprite.
-Behavior_Cursor.prototype.constructor=Behavior_Cursor;
+Behavior_Cursor2.prototype= Object.create(Behavior.prototype);//Degfino que es sub clase de Sprite.
+Behavior_Cursor2.prototype.constructor=Behavior_Cursor2;
 
-Behavior_Cursor.prototype.update=function(){
+Behavior_Cursor2.prototype.update=function(){
 
      this.sprite.body.velocity.x = 0;
 
@@ -53,7 +54,21 @@ Behavior_Cursor.prototype.update=function(){
 
         this.frame = 4;
     }
-    
+    if (this.cursors.up.isDown)
+    {
+        //  Move to the left
+        this.sprite.body.velocity.y = -150;
+
+        this.sprite.animations.play('left');
+    }
+    else if (this.cursors.down.isDown)
+    {
+        //  Move to the right
+        this.sprite.body.velocity.y = 150;
+
+        this.sprite.animations.play('right');
+    }
+
     //  Allow the this to jump if they are touching the ground.
     if (this.cursors.up.isDown && this.sprite.body.touching.down)
     {
