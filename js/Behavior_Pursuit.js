@@ -42,16 +42,13 @@ Behavior_Pursuit.prototype.update = function () {
        if (game.physics.arcade.distanceToPointer(this.sprite, game.input.activePointer) > 10)
             this.seek();
        else
-            this.sprite.body.velocity.set(0);
-       
-       this.seek();
-       
+            this.sprite.body.velocity.set(0);      
        
        t=0; 
+       this.target.sprite.body.position=this.targetP.sprite.body.position;
     }
     else {
-        this.target.sprite.body.position=this.targetP.sprite.body.position; // Vuelve a la posicion del objetivo
-        //this.target.sprite.body.velocity=this.targetP.sprite.body.velocity;
+        //this.target.sprite.body.position=this.targetP.sprite.body.position; 
         t++;
     }
 }
@@ -59,7 +56,6 @@ Behavior_Pursuit.prototype.update = function () {
 // Seek
 Behavior_Pursuit.prototype.seek = function () {
 
-    //console.log("entro" + this.sprite.position);
     // VELOCIDAD DESEADA --> normalize(target - position) * max_velocity
     var velDeseada = Phaser.Point.subtract(this.target.sprite.position, this.sprite.position);
     
