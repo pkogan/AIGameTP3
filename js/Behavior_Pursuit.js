@@ -18,7 +18,6 @@ function Behavior_Pursuit(game, posx, posy, key, frame, target, targetP) {
     // Agrega el otro objetivo.
     this.targetP = targetP;
     
-    this.vecReference = new Phaser.Point(0, 0);
     this.max_vel = 150;
     this.max_force = 10;
     return this;
@@ -26,31 +25,32 @@ function Behavior_Pursuit(game, posx, posy, key, frame, target, targetP) {
 Behavior_Pursuit.prototype = Object.create(Behavior.prototype);//Defino que es sub clase de Sprite.
 Behavior_Pursuit.prototype.constructor = Behavior_Pursuit;
 
-var t=10;
+// Valor de T estático
+//var t=10;
+
+
 
 Behavior_Pursuit.prototype.update = function () {
-
-    // Calcular predicción
-    if(t===10){
-        
+       // Valor de T dinámico 
+       var t = Phaser.Math.distance(this.target.sprite.body.position.x,this.target.sprite.body.position.y, this.sprite.body.position.x,this.sprite.body.position.y);
+       t = t / this.max_vel;
+     
+    
+    
        // Cambia la velocidad del objetivo a la predicción...  
        this.target.sprite.body.velocity.x=this.target.sprite.body.velocity.x*t;
        this.target.sprite.body.velocity.y=this.target.sprite.body.velocity.y*t;      
        Phaser.Point.add(this.target.sprite.body.position, (this.target.sprite.body.velocity));
        
        // Si está muy cerca, para. Seria incluyendo el arrive?
-       if (game.physics.arcade.distanceToPointer(this.sprite, game.input.activePointer) > 10)
-            this.seek();
-       else
-            this.sprite.body.velocity.set(0);      
-       
-       t=0; 
+//       if (game.physics.arcade.distanceToPointer(this.sprite, game.input.activePointer) > 10)
+//            this.seek();
+//       else
+//            this.sprite.body.velocity.set(0);      
+//       
+       this.seek();
+        
        this.target.sprite.body.position=this.targetP.sprite.body.position;
-    }
-    else {
-        //this.target.sprite.body.position=this.targetP.sprite.body.position; 
-        t++;
-    }
 }
 
 // Seek
@@ -78,10 +78,10 @@ Behavior_Pursuit.prototype.seek = function () {
         
     // velocity = truncate (velocity + steering , max_speed)
     this.sprite.body.velocity.add(vecSteering.x, vecSteering.y); // hace la suma: velocity + steering
-    console.log(this.sprite.body.velocity);
+    
     // luego si, verifica que no supere la velocidad maxima
-    if (this.sprite.body.velocity.getMagnitudeSq() > (this.vel * this.vel)) {
-        this.sprite.body.velocity.setMagnitude(this.vel);
+    if (this.sprite.body.velocity.getMagnitudeSq() > (this.max_vel * this.max_vel)) {
+        this.sprite.body.velocity.setMagnitude(this.max_vel);
     }
 }
 ;

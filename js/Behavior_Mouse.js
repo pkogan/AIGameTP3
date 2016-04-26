@@ -25,7 +25,7 @@ Behavior_Mouse.prototype.update = function () {
                 if (game.physics.arcade.distanceToPointer(this.sprite, game.input.activePointer) > 5)
                 {
                     // Movimiento
-                    game.physics.arcade.moveToPointer(this.sprite, 100);
+                    game.physics.arcade.moveToPointer(this.sprite, 200);
                     
 //                    // Rotación siguiendo al mouse
 //                    var targetAngle = (360 / (2 * Math.PI)) * game.math.angleBetween(this.sprite.body.x, this.sprite.body.y,this.game.input.activePointer.x, this.game.input.activePointer.y) + 90;
