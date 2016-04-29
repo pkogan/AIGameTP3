@@ -27,7 +27,7 @@ function Behavior(game, posx, posy, key, frame, target) {
      *  Variables utiles para el comportamiento 
      */
     this.esp_speed = 0;
-    this.max_speed = 0;
+    this.max_speed = 100;
     this.min_speed = 0;
     this.min_distance = 0;
     this.max_distance = 0;
