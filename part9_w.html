@@ -77,9 +77,9 @@ function create() {
     player2 = new Behavior_Derecho(game, 0 ,0, 'dude', 3 ,player);//perseguidor
     
     //wander
-    posX = /*20;*/ game.rnd.between(10, game.world.width - 10);
-    posY = /*20;*/ game.rnd.between(10, game.world.height - 10);
-    wander = new Behavior_Wander(game, posX, posY, 'diamond', 1, null);
+    posX = game.rnd.between(10, game.world.width - 10);
+    posY = game.rnd.between(10, game.world.height - 10);
+    playerWander = new Behavior_Wander(game, posX, posY, 'diamond', 1, player);
     
     
             ////game.add.sprite(32, game.world.height - 150, 'dude');
@@ -129,7 +129,7 @@ function update() {
     player.update();
     player2.update();
     
-    wander.update();
+    playerWander.update();
 }
 
 function collectStar (player, star) {

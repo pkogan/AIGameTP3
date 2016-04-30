@@ -11,16 +11,14 @@
  */
 function Behavior_Wander(game, posx, posy, key, frame, target) {
     Behavior.call(this, game, posx, posy, key, frame, target);
-        
-    //this.sprite.body.bounce.y = 0;//0.2;
-    //this.sprite.body.gravity.y = 0;//100;
-    this.sprite.body.collideWorldBounds = true;
     
-    this.CIRCLE_DISTANCE = 500;
-    this.CIRCLE_RADIUS = 200;
-    this.ANGLE_CHANGE = 300;
-    this.max_force = 100;//0
-    this.wanderAngle = 1;
+    this.CIRCLE_DISTANCE = 10;
+    this.CIRCLE_RADIUS = 3;//menor que la distancia anterior
+    this.ANGLE_CHANGE = 1;
+    this.max_force = 5;
+    this.wanderAngle = 10;
+    this.wanderDate = new Date();
+    this.tiempoEspera = 200;
     
     return this;
 }
@@ -30,69 +28,76 @@ Behavior_Wander.prototype.constructor = Behavior_Wander;
 
 Behavior_Wander.prototype.update = function () {
 
-    //console.log(this.sprite.body.velocity);
-    //se determina el punto del círculo en la misma dirección de la velocidad del personaje
+    console.log(this.sprite.body.position);
+    var ahora = new Date();
+    var tiempoTranscurrido = ahora - this.wanderDate;
+    
+    if (tiempoTranscurrido > this.tiempoEspera){
+
+    //se determina el punto del círculo en la misma dirección de la velocidad del personaje	
     var circleCenter = this.sprite.body.velocity.clone();
     circleCenter.normalize();
-    scaleBy(circleCenter,this.CIRCLE_DISTANCE);//no existe .scaleBy(...), debería multiplicar el
-    // vector por la constante que se pasa como argumento
+    scaleBy(circleCenter,this.CIRCLE_DISTANCE);//multiplica el vector por la constante que se pasa como argumento
     
     //se determina la fuerza de desplazamiento, responsable del giro hacia la izquierda o derecha
-    var desplazamiento = new Phaser.Point(0,-1);
+    var abcisa = game.rnd.between(-1, 1);
+    var ordenada = game.rnd.between(-1, 1);
+    var desplazamiento = new Phaser.Point(abcisa,ordenada);
     scaleBy(desplazamiento,this.CIRCLE_RADIUS);
-    
     
     //se desplaza el ángulo del personaje
     setAngle(desplazamiento,this.wanderAngle);
     
     this.wanderAngle += (Math.random() * this.ANGLE_CHANGE) - (this.ANGLE_CHANGE * 0.5);
-    
-    wanderForce = circleCenter.add(desplazamiento);//punto al cual se desplaza el personaje, vector de desplazamiento??
+
+    var wanderForce = circleCenter.add(desplazamiento.x,desplazamiento.y);//punto al cual se desplaza el personaje, vector de desplazamiento
     
     truncate(wanderForce,this.max_force);
     //wanderForce = wanderForce / mass;
-    this.sprite.body.velocity.add(wanderForce);
-    truncate(this.sprite.body.velocity, this.max_speed);
-    this.sprite.body.position.add(this.sprite.body.velocity);  
+    this.sprite.body.velocity.add(wanderForce.x,wanderForce.y);
+    truncate(this.sprite.body.velocity, this.max_speed);    
+	}
+	this.sprite.body.position.add(this.sprite.body.velocity.x,this.sprite.body.velocity.y);
+    loopWalls(this.sprite.body.position,this.game.world);
 }
 
 function scaleBy(punto, constante) {
 	
-	punto.x = punto.x * constante;
-	punto.y = punto.y * constante;
+	punto = punto.multiply(constante,constante);
 }
 
 function setAngle(vector, valor) {
 	
-	var longit = longitud(vector);
-	vector.x = Math.cos(valor) * longit;
-	vector.y = Math.sin(valor) * longit;
-}
-
-function longitud(vector){
-//calcula la hipotenusa desde el origen al vector
-	var hipotenusa = catetoOpuesto(vector) * Math.sin(vector);
-	return hipotenusa;
-}
-
-function catetoOpuesto(vector){
-	return vector.y;
-}
-
-function catetoAdyacente(vector){
-	return vector.x;
+	var longitud_actual = vector.getMagnitude();
+	var punto = new Phaser.Point(Math.cos(valor) * longitud_actual, Math.sin(valor) * longitud_actual);
+	var longitud_deseada = punto.getMagnitude();
+	vector.setMagnitude(longitud_deseada);
+	
 }
 
 function truncate(vector, maximo) {
-//trunca un punto
-//cómo????
-//comparo valor hipotenusa (del vector al origen) > maximo??
-	var hipotenusa = longitud(vector);
-	if (hipotenusa > maximo){
-		cateto_opuesto = maximo * Math.sin(vector);
-		cateto_adyacente = maximo * Math.cos(vector);
-		vector.x = cateto_adyacente;
-		vector.y = cateto_opuesto;
+//trunca un punto		
+        if (vector.getMagnitude() > maximo){
+			vector.setMagnitude(maximo);
 		}
+}
+function loopWalls(vector, bounds){
+	
+    if (vector.x < 0)
+    {
+      vector.x = bounds.width;
+    }
+    else if (vector.x > bounds.width)
+    {
+      vector.x = 0;
+    }
+    if (vector.y < 0)
+    {
+      vector.y = bounds.height
+    }
+    else if (vector.y > bounds.height)
+    {
+      vector.y = 0
+    }
 }
 ;
