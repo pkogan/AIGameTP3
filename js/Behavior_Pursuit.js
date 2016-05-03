@@ -12,52 +12,43 @@
  */
 
 
-function Behavior_Pursuit(game, posx, posy, key, frame, target, targetP) {
+function Behavior_Pursuit(game, posx, posy, key, frame, target) {
     Behavior.call(this, game, posx, posy, key, frame, target); 
-    
-    // Agrega el otro objetivo.
-    this.targetP = targetP;
-    
-    this.vecReference = new Phaser.Point(0, 0);
+            
     this.max_vel = 150;
-    this.max_force = 10;
+    this.max_force = 5;
     return this;
 }
 Behavior_Pursuit.prototype = Object.create(Behavior.prototype);//Defino que es sub clase de Sprite.
 Behavior_Pursuit.prototype.constructor = Behavior_Pursuit;
 
+// Valor de T estático
 var t=10;
 
-Behavior_Pursuit.prototype.update = function () {
 
-    // Calcular predicción
-    if(t===10){
-        
+
+Behavior_Pursuit.prototype.update = function () {
+       
+//        // Valor de T dinámico 
+//       var t = Phaser.Math.distance(this.target.sprite.body.position.x,this.target.sprite.body.position.y, this.sprite.body.position.x,this.sprite.body.position.y);
+//       t = t / this.max_vel;
+//     
+    
+    
        // Cambia la velocidad del objetivo a la predicción...  
-       this.target.sprite.body.velocity.x=this.target.sprite.body.velocity.x*t;
-       this.target.sprite.body.velocity.y=this.target.sprite.body.velocity.y*t;      
-       Phaser.Point.add(this.target.sprite.body.position, (this.target.sprite.body.velocity));
+       vel_x=this.target.sprite.body.velocity.x*t;
+       vel_y=this.target.sprite.body.velocity.y*t;      
+       pos_futura=Phaser.Point.add(this.target.sprite.body.position, new Phaser.Point(vel_x,vel_y));
        
-       // Si está muy cerca, para. Seria incluyendo el arrive?
-       if (game.physics.arcade.distanceToPointer(this.sprite, game.input.activePointer) > 10)
-            this.seek();
-       else
-            this.sprite.body.velocity.set(0);      
-       
-       t=0; 
-       this.target.sprite.body.position=this.targetP.sprite.body.position;
-    }
-    else {
-        //this.target.sprite.body.position=this.targetP.sprite.body.position; 
-        t++;
-    }
+       this.seek(pos_futura);
+             
 }
 
 // Seek
-Behavior_Pursuit.prototype.seek = function () {
+Behavior_Pursuit.prototype.seek = function (futuro) {
 
     // VELOCIDAD DESEADA --> normalize(target - position) * max_velocity
-    var velDeseada = Phaser.Point.subtract(this.target.sprite.position, this.sprite.position);
+    var velDeseada = Phaser.Point.subtract(futuro, this.sprite.position);
     
     // Se normaliza la velocidad deseada
     velDeseada.normalize();
@@ -74,14 +65,15 @@ Behavior_Pursuit.prototype.seek = function () {
         vecSteering.setMagnitude(this.max_force);
     }
     
-    // No tomamos en cuenta la masa. steering = steering / mass
+    // No tomamos en cuenta la masa. steering = steering / mass  
+   
         
     // velocity = truncate (velocity + steering , max_speed)
     this.sprite.body.velocity.add(vecSteering.x, vecSteering.y); // hace la suma: velocity + steering
-    console.log(this.sprite.body.velocity);
+    
     // luego si, verifica que no supere la velocidad maxima
-    if (this.sprite.body.velocity.getMagnitudeSq() > (this.vel * this.vel)) {
-        this.sprite.body.velocity.setMagnitude(this.vel);
+    if (this.sprite.body.velocity.getMagnitudeSq() > (this.max_vel * this.max_vel)) {
+        this.sprite.body.velocity.setMagnitude(this.max_vel);
     }
 }
 ;
