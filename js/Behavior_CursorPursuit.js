@@ -38,14 +38,14 @@ Behavior_Cursor.prototype.update=function(){
         //  Move to the left
         this.sprite.body.velocity.x = -200;
 
-        //this.sprite.animations.play('left');
+        this.sprite.animations.play('left');
     }
     else if (this.cursors.right.isDown)
     {
         //  Move to the right
         this.sprite.body.velocity.x = 200;
 
-        //this.sprite.animations.play('right');
+        this.sprite.animations.play('right');
     }
     else
     {
@@ -59,22 +59,28 @@ Behavior_Cursor.prototype.update=function(){
         //  Move to the left
         this.sprite.body.velocity.y = -200;
 
-        //this.sprite.animations.play('left');
+        this.sprite.animations.play('left');
     }
     else if (this.cursors.down.isDown)
     {
         //  Move to the right
         this.sprite.body.velocity.y = 200;
 
-        //this.sprite.animations.play('right');
+        this.sprite.animations.play('right');
     }
 
     //  Allow the this to jump if they are touching the ground.
-    if (this.cursors.up.isDown && this.sprite.body.touching.down)
-    {
-        this.sprite.body.velocity.y = -350;
-    }
-        
+    //if (this.cursors.up.isDown)
+    //{
+      //  this.sprite.body.velocity.y = -200;
+   // }
+    
+    //if(this.cursors.down.isDown)
+    //{
+    //    this.sprite.body.velocity.y = 200;
+    //}
+    
+    
         
     }
 ;
