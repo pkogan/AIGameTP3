@@ -1,0 +1,83 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>Separation</title>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="js/Behavior.js"></script>
+    <script type="text/javascript" src="js/Behavior_Cursor.js"></script>
+    <script type="text/javascript" src="js/Behavior_Derecho.js"></script>
+    <script type="text/javascript" src="js/Behavior_Wander.js"></script>
+    <script type="text/javascript" src="js/Behavior_Separation.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+function preload() {
+
+    game.load.image('sky', 'assets/sky.png');
+    game.load.image('ground', 'assets/platform.png');
+    game.load.image('star', 'assets/star.png');
+    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+
+	game.load.image('diamond', 'assets/diamond.png');
+}
+
+var player;
+var cursors;
+
+var stars;
+var a=[];
+
+function create() {
+
+    //  We're going to be using physics, so enable the Arcade Physics system
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    //  A simple background for our game
+    game.add.sprite(0, 0, 'sky');    
+//  Our controls.
+    cursors = game.input.keyboard.createCursorKeys();
+    // The player and its settings
+    player = new Behavior_Cursor(game, 0 ,0, 'dude', 3 ,null,cursors);//target
+    player2 = new Behavior_Derecho(game, 0 ,0, 'dude', 3 ,player);//perseguidor
+    
+    
+    posX = game.rnd.between(10, game.world.width - 20);
+    posY = game.rnd.between(10, game.world.height - 20);
+	player1_Grupo = new Behavior_Separation(game, posX , posY, 'diamond', 3 ,player);
+	
+	
+	player2_Grupo = new Behavior_Separation(game, posX+1 , posY, 'diamond', 3 ,player);        
+for(b=0;b<10;b++){
+a[b]=new Behavior_Separation(game, posX +b, posY+b, 'diamond', 3 ,player);
+}
+
+
+}
+
+function update() {
+
+    player.update();
+    player2.update();
+ 
+	player1_Grupo.update();
+	
+player2_Grupo.update();
+
+for(b=0;b<10;b++){
+	a[b].update();
+}
+
+}
+
+</script>
+</body>
+</html>
